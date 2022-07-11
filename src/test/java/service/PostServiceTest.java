@@ -37,6 +37,7 @@ public class PostServiceTest {
 
   @Test
   public void addPost() throws IOException {
+    //    Arrange
     String jsonString =
         "{\"userId\": 1, \"title\": \"Sample test\", \"body\": \"Sample test body\",\"id\": \"101\"}";
     Post expectedPost = new ObjectMapper().readValue(jsonString, Post.class);
@@ -55,12 +56,17 @@ public class PostServiceTest {
     when(apiClient.getClient()).thenReturn(okHttpClient);
     when(okHttpClient.newCall(any(Request.class))).thenReturn(call);
     when(call.execute()).thenReturn(response);
+
+    //    Act
     Post actualPost = postService.addPost(jsonString);
+
+    //    Assert
     assertThat(actualPost).isEqualTo(expectedPost);
   }
 
   @Test
   public void getPost() throws IOException {
+    //    Arrange
     String jsonString =
         "{\"userId\": 1, \"title\": \"Sample test\", \"body\": \"Sample test body\",\"id\": \"101\"}";
     Post expectedPost = new ObjectMapper().readValue(jsonString, Post.class);
@@ -79,12 +85,17 @@ public class PostServiceTest {
     when(apiClient.getClient()).thenReturn(okHttpClient);
     when(okHttpClient.newCall(any(Request.class))).thenReturn(call);
     when(call.execute()).thenReturn(response);
+
+    //    Act
     Post actualPost = postService.getPost("101");
+
+    //    Assert
     assertThat(actualPost).isEqualTo(expectedPost);
   }
 
   @Test
   public void throwExceptionsIfPostNotFound() throws IOException {
+    //    Arrange
     String jsonString = "{}";
     Post expectedPost = new ObjectMapper().readValue(jsonString, Post.class);
     ResponseBody responseBody =
@@ -102,11 +113,14 @@ public class PostServiceTest {
     when(apiClient.getClient()).thenReturn(okHttpClient);
     when(okHttpClient.newCall(any(Request.class))).thenReturn(call);
     when(call.execute()).thenReturn(response);
+
+    //    Act & Assert
     assertThatThrownBy(() -> postService.getPost("101")).isInstanceOf(PostNotExistException.class);
   }
 
   @Test
   public void updatePost() throws IOException {
+    //    Arrange
     String jsonString =
         "{\"userId\": 1, \"title\": \"Sample test\", \"body\": \"Sample test body\",\"id\": \"101\"}";
     Post expectedPost = new ObjectMapper().readValue(jsonString, Post.class);
@@ -125,16 +139,17 @@ public class PostServiceTest {
     when(apiClient.getClient()).thenReturn(okHttpClient);
     when(okHttpClient.newCall(any(Request.class))).thenReturn(call);
     when(call.execute()).thenReturn(response);
+
+    //    Act
     Post actualPost = postService.updatePost("101", jsonString);
+
+    //    Assert
     assertThat(actualPost.getUserId()).isEqualTo(expectedPost.getUserId());
   }
 
   @Test
   public void throwExceptionWhenUpdatePostThatDidNotExists() throws IOException {
-    String jsonString = "{}";
-    Post expectedPost = new ObjectMapper().readValue(jsonString, Post.class);
-    ResponseBody responseBody =
-        ResponseBody.create(MediaType.parse("application/json"), jsonString);
+    //    Arrange
     Response response =
         new Response.Builder()
             .request(new Request.Builder().url("http://localhost:8080/posts").build())
@@ -148,6 +163,8 @@ public class PostServiceTest {
     when(apiClient.getClient()).thenReturn(okHttpClient);
     when(okHttpClient.newCall(any(Request.class))).thenReturn(call);
     when(call.execute()).thenReturn(response);
+
+    //    Act & Assert
     assertThatThrownBy(() -> postService.getPost("879")).isInstanceOf(PostNotExistException.class);
   }
 }
