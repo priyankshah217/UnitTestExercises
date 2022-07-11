@@ -2,7 +2,7 @@ package service;
 
 import api.ApiClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import config.TestAppConfig;
+import context.AppConfig;
 import entity.Post;
 import exception.PostNotExistException;
 import okhttp3.Call;
@@ -28,7 +28,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-@ContextConfiguration(classes = {TestAppConfig.class})
+@ContextConfiguration(classes = {AppConfig.class})
 public class PostServiceTest {
 
   @InjectMocks private PostService postService;
