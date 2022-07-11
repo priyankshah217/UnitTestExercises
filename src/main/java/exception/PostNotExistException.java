@@ -1,4 +1,4 @@
-package service;
+package exception;
 
 public class PostNotExistException extends RuntimeException {
   public PostNotExistException() {

@@ -3,6 +3,7 @@ package service;
 import api.ApiClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import entity.Post;
+import exception.PostNotExistException;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
